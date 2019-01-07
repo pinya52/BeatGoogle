@@ -1,27 +1,27 @@
 public class Keyword {
 
- private String name;
- private double weight;
+	public String name;
+	public double weight;
 
- public Keyword(String name, double weight) {
+	public Keyword(String name, double weight) {
 
-  this.name = name;
-  this.weight = weight;
+		this.name = name;
+		this.weight = weight;
 
- }
+	}
 
- public String getName() {
+	public String getName() {
 
-  return name;
- }
+		return name;
+	}
 
- public double getWeight() {
+	public double getWeight() {
 
-  return weight;
- }
+		return weight;
+	}
 
- public String toString() {
+	public String toString() {
 
-  return "[" + name + "," + weight + "]";
- }
+		return "[" + name + "," + weight + "]";
+	}
 }

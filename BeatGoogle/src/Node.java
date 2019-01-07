@@ -3,116 +3,107 @@ import java.util.ArrayList;
 
 public class Node {
 
- public Node parent;
- public ArrayList<Node> children;
+	public Node parent;
+	public ArrayList<Node> children;
 
- private String url;
- private HTMLHandler handler;
- private String name;
+	private String url;
+	private HTMLHandler handler;
+	private String name;
 
- public double nodeScore;
- public double imageScore;
- public double totalScore;
- private KeywordList keywords;
+	public double nodeScore;
+	public double imageScore;
+	public double totalScore;
+	private KeywordList keywords;
 
- public Node(String url, KeywordList keywords) {
-  this.url = url;
-  this.handler = new HTMLHandler(url);
-  this.children = new ArrayList<Node>();
-  this.keywords = keywords;
- }
+	public Node(String url, KeywordList keywords) {
+		this.url = url;
+		this.handler = new HTMLHandler(url);
+		this.children = new ArrayList<Node>();
+		this.keywords = keywords;
+	}
 
- public Node(String url, KeywordList keywords, String name) {
-  this.url = url;
-  this.handler = new HTMLHandler(url);
-  this.children = new ArrayList<Node>();
-  this.keywords = keywords;
-  this.name = name;
- }
+	public Node(String url, KeywordList keywords, String name) {
+		this.url = url;
+		this.handler = new HTMLHandler(url);
+		this.children = new ArrayList<Node>();
+		this.keywords = keywords;
+		this.name = name;
+	}
 
- public void addChildren() throws IOException {
+	public void addChildren() throws IOException {
 
-  ArrayList<String> subLinks = new ArrayList<String>();
-  subLinks = handler.getSubLink();
+		ArrayList<String> subLinks = new ArrayList<String>();
+		subLinks = handler.getSubLink();
 
-  for (int i = 0; i < subLinks.size(); i++) {
+		for (int i = 0; i < subLinks.size(); i++) {
 
-   Node child = new Node(subLinks.get(i), keywords);
-   child.parent = this;
-   children.add(child);
-  }
+			Node child = new Node(subLinks.get(i), keywords);
+			child.parent = this;
+			children.add(child);
+		}
 
- }
+	}
 
- public void setNodeScore() throws IOException {
+	public void setNodeScore() {
 
-  this.nodeScore = 0;
+		this.nodeScore = 0;
 
-  for (int i = 0; i < keywords.size(); i++) {
+		for (int i = 0; i < keywords.size(); i++) {
 
-   try {
-    Keyword keyword = keywords.get(i);
-    this.nodeScore += handler.countKeyword(keyword.getName()) * keyword.getWeight();
-   } catch (IOException e) {
-   }
-  }
+			Keyword keyword = keywords.get(i);
 
-  for (Node child : children) {
+			try {
+				this.nodeScore += handler.countKeyword(keyword.name) * keyword.weight;
 
-   for (int i = 0; i < keywords.size(); i++) {
+				for (Node child : children) {
+					child.nodeScore += child.handler.countKeyword(keyword.name) * keyword.weight;
+					this.nodeScore += child.nodeScore;
+				}
 
-    try {
-     Keyword keyword = keywords.get(i);
-     child.nodeScore += child.handler.countKeyword(keyword.getName()) * keyword.getWeight();
-    } catch (IOException e) {
-    }
-   }
-   this.nodeScore += child.nodeScore;
-  }
+			} catch (IOException e) {
+			}
+		}
 
-  this.totalScore = nodeScore + imageScore;
+		this.totalScore = nodeScore + imageScore;
 
- }
+	}
 
- public void setImageScore() throws IOException {
+	public void setImageScore() {
 
-  try {
-   this.imageScore = 0;
-   imageScore += handler.countImage() * 0.05;
-  } catch (IOException e) {
-  }
+		this.imageScore = 0;
 
-  for (Node child : children) {
+		try {
+			imageScore += handler.countImage() * 0.05;
 
-   try {
+			for (Node child : children) {
 
-    child.imageScore += child.handler.countImage() * 0.05;
-   } catch (IOException e) {
-   }
+				child.imageScore += child.handler.countImage() * 0.05;
 
-   this.imageScore += child.imageScore;
-  }
+				this.imageScore += child.imageScore;
+			}
+		} catch (IOException e) {
+		}
 
-  this.totalScore = nodeScore + imageScore;
- }
+		this.totalScore = nodeScore + imageScore;
+	}
 
- public double getNodeScore() {
-  return nodeScore;
- }
+	public double getNodeScore() {
+		return nodeScore;
+	}
 
- public double getImageScore() {
-  return imageScore;
- }
+	public double getImageScore() {
+		return imageScore;
+	}
 
- public double getTotalScore() {
-  return totalScore;
- }
+	public double getTotalScore() {
+		return totalScore;
+	}
 
- public String getName() {
-  return name;
- }
+	public String getName() {
+		return name;
+	}
 
- public String getURL() {
-  return url;
- }
+	public String getURL() {
+		return url;
+	}
 }
