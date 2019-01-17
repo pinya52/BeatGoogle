@@ -3,16 +3,16 @@ import java.util.ArrayList;
 
 public class Node {
 
-	public Node parent;
 	public ArrayList<Node> children;
 
 	private String url;
-	private HTMLHandler handler;
 	private String name;
-
+	private HTMLHandler handler;
+	
 	public double nodeScore;
 	public double imageScore;
 	public double totalScore;
+	
 	private KeywordList keywords;
 
 	public Node(String url, KeywordList keywords) {
@@ -38,7 +38,7 @@ public class Node {
 		for (int i = 0; i < subLinks.size(); i++) {
 
 			Node child = new Node(subLinks.get(i), keywords);
-			child.parent = this;
+
 			children.add(child);
 		}
 
@@ -76,9 +76,7 @@ public class Node {
 			imageScore += handler.countImage() * 0.05;
 
 			for (Node child : children) {
-
 				child.imageScore += child.handler.countImage() * 0.05;
-
 				this.imageScore += child.imageScore;
 			}
 		} catch (IOException e) {

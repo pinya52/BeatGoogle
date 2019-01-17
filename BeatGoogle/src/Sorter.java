@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Sorter {
 
-	public Node root;
+
 	public ArrayList<Node> nodeList = new ArrayList<Node>();
 
 	public Sorter(ArrayList<Node> nodeList) {

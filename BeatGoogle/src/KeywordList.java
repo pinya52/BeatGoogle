@@ -14,7 +14,6 @@ import org.jsoup.select.Elements;
 public class KeywordList {
 
 	private ArrayList<Keyword> keywordList = new ArrayList<Keyword>();
-
 	private String originalURL;
 	private String content;
 
@@ -83,22 +82,20 @@ public class KeywordList {
 
 		Document document = Jsoup.parse(this.content);
 		Elements lis = document.select("div.g");
-		for(Element li : lis)
-		{
-			try 
-			{
+		for (Element li : lis) {
+			try {
 				Element h3 = li.select("h3.r").get(0);
 				String title = h3.text();
-	
+
 				Element cite = li.getElementsByTag("a").first();
-				String citeUrl = "https://www.google.com.tw"+ cite.attr("href");
-				
+				String citeUrl = "https://www.google.com.tw" + cite.attr("href");
+
 				retVal.put(title, citeUrl);
-				
+
 			} catch (IndexOutOfBoundsException e) {
-				
+
 			}
-			
+
 		}
 
 		return retVal;

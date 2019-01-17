@@ -165,9 +165,9 @@ public class UI {
 
 		public void actionPerformed(ActionEvent e) {
 			String keyword = keywordText.getText();
-			String weightS = weightText.getText();
+			String weights = weightText.getText();
 			try {
-				double weight = Double.parseDouble(weightS);
+				double weight = Double.parseDouble(weights);
 				Keyword k = new Keyword(keyword, weight);
 				list.add(k);
 				keywordListArea.append(k.toString() + "\n");
@@ -176,9 +176,7 @@ public class UI {
 			} catch (Exception ee) {
 				keywordText.setText(null);
 				weightText.setText(null);
-
 			}
-
 		}
 	}
 
